@@ -58,17 +58,21 @@ When a URL or image path is modified, the system checks for its existence in the
 
 Can be modified to register other variables considered relevant.
 
-![Data Entry](assets/readme/data-entry.png)
+![Data Entry](assets/readme/data_entry.png)
 
 ### 2. Calibration and instructions
 
-![Calibration and instructions](assets/readme/instrucciones-y-calibracion.png)
+![Calibration and instructions](assets/readme/calibration.png)
 
 *The calibration instructions image is provided by the module; consider creating a translated version if needed.*
 
-### 3. Prototype presentation
+### Accessing your data
 
-![Prototype presentation](assets/readme/prototipo-figma.png)
+After conducting your remote user studies you can access the data at (`/sujetos`). It will show you different tabs for the different studies that you have registered.
+
+![Accessing data](assets/readme/accessing_data.png)
+
+There you can navigate through your studies, in each studies through your users and access their individual data and pre visualize or download some animations or heatmaps. Also you can download all the data for a given study with the button in the left bottom corner.
 
 ## Roadmap
 
