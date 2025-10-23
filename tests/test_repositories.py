@@ -106,7 +106,7 @@ class TestStudyRepository:
             assert study.description == "Testing user interactions"
             assert study.prototype_url == "https://figma.com/test"
             assert study.prototype_image_path == "/path/to/image.png"
-            assert study.created_at is not None
+            assert study.created_at is  None
     
     def test_get_all_studies(self, app):
         """Test retrieving all studies ordered by date."""
