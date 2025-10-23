@@ -1,6 +1,8 @@
 # User Gaze Tracking Tool for Prototypes
 
-This web application uses Flask as the backend to handle data entry and WebGazer.js in the frontend to perform user gaze tracking. The basic application flow is as follows:
+A web application that uses WebGazer.js to record participants’ gaze while presenting a prototype or image and assigning tasks. It is intended for remote user studies: it simplifies the collection, storage, and export of gaze and mouse data without requiring participants to be physically present.
+
+This tool is designed to streamline remote user studies, reduce logistical overhead, and enable reproducible collection of users' behavior data.
 
 1. **Home Page (/):** Contains a data entry form. Users should fill the form and click "Submit" to proceed.
 
@@ -10,9 +12,9 @@ This web application uses Flask as the backend to handle data entry and WebGazer
 
 4. **Results Page for a subject (/resultados?id={sujeto}):** View the gaze heatmap for a subject and download their data as CSV.
 
-## Uso del Proyecto
+## Installation and Usage
 
-### 1. Clona este repositorio
+### 1. Clone this repository
 
 ```bash
 git clone https://github.com/justogm/user-gaze-track.git
@@ -25,23 +27,36 @@ cd user-gaze-track
 python run.py
 ```
 
-## Importante
+This will start to install dependencies and prompting to modify or not the existing configuration and tasks. Then it will start running the flask application.
+
+## Configuration
+
+You can change the configuration by GUI in any moment by running ():
+
+```bash
+# remember activating the venv or conda environment
+python src/config.py
+```
+
+When a URL or image path is modified, the system checks for its existence in the database. If not found, the application will either prompt for a study name or automatically apply the associated name during the next run.
+
+## Important
 
 > [!CAUTION]
-> Esta herramienta está en desarrollo y está pensada para entornos controlados, aún presenta severas vulnerabilidades para su distribución. Se recomienda no utilizarla en entornos de producción.
+> This tool is under development and intended for controlled environments. It currently has serious security vulnerabilities and is not recommended for production use.
 
-## Tecnologías relevantes
+## Tech Stack
 
 - [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 - [WebGazer.js](https://webgazer.cs.brown.edu/)
 - [heatmap.js](https://www.patrick-wied.at/static/heatmapjs/)
 - [SQLite](https://www.sqlite.org/index.html)
 
-## Capturas de pantalla
+## Screenshots
 
-### 1. Ingreso de datos
+### 1. Data Entry
 
-Puede ser modificado de acuerdo a las variables que se consideren relevantes.
+Can be modified to register other variables considered relevant.
 
 ![Data Entry](assets/readme/data-entry.png)
 
@@ -55,11 +70,12 @@ Puede ser modificado de acuerdo a las variables que se consideren relevantes.
 
 ![Prototype presentation](assets/readme/prototipo-figma.png)
 
-## TODO
+## Roadmap
 
 - [ ] Evaluate module behavior when the prototype is in fullscreen mode.
-- [ ] Explore alternatives for prototype presentation.
+- [x] Explore alternatives for prototype presentation.
 - [x] Make it easier to change the prototype instead of leaving it hardcoded.
   - A configuration file was created; see the [configuration section](#4-configure-the-tool).
 - [x] Develop a parallel app for accessing and manipulating generated data.
   - The route `/sujetos` was developed
+- [x] Habilitate to store data from multiples studies.
