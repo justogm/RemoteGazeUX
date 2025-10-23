@@ -1,0 +1,17 @@
+[project]
+name = "user-gaze-track"
+version = "0.0.0"
+description = "User Gaze Track - gaze tracking web app for conducting remote user studies"
+readme = "README.md"
+license = { text = "GPL-3.0" }
+authors = [ { name = "Justo Garcia", email = "justogarciapc@gmail.com" } ]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+skip-string-normalization = false
