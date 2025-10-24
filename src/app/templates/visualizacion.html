@@ -11,17 +11,15 @@
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/visualizacion.css') }}"
+    />
 </head>
 <body>
-    <header style="background-color: #f8f9fa; padding: 15px 30px; border-bottom: 2px solid #dee2e6; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h1 style="margin: 0;">Visualización de Sujeto</h1>
-        <a href="/sujetos" class="btn btn-primary" style="font-size: 16px; padding: 10px 20px; text-decoration: none; background-color: #007bff; color: white; border-radius: 5px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-            </svg>
-            Volver a Sujetos
-        </a>
-    </header>
+    {% set active_page = 'sujetos' %}
+    {% include 'navbar.html' %}
+
+    <div class="container mt-3">
+        <h1 class="mb-3">Visualización de Sujeto</h1>
+    </div>
     <div id="plots">
         <div class="plot-container">
             <div id="mouse-plot" class="plot"></div>
@@ -44,7 +42,9 @@
             </div>
         </div>
     </div>
-
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script src="{{ url_for('static', filename='js/visualizacion.js') }}"></script>
 </body>
 </html>

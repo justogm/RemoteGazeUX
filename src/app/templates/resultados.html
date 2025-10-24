@@ -19,6 +19,9 @@
     <title>Resultados</title>
   </head>
   <body>
+    {% set active_page = 'sujetos' %}
+    {% include 'navbar.html' %}
+
     <a href="/sujetos" id="btn-volver">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
@@ -59,6 +62,9 @@
     <script type="text/javascript">
       window.puntosData = {{ puntos|tojson }};
     </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Script principal de resultados -->
     <script src="{{ url_for('static', filename='js/resultados.js') }}"></script>

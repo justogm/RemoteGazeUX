@@ -146,6 +146,19 @@ def fin_medicion():
     return render_template("fin.html")
 
 
+@app.route("/estudios")
+def estudios():
+    """
+    Shows the list of all studies in the database.
+    ---
+    responses:
+        200:
+            description: Page with the list of all studies.
+    """
+    studies = study_repository.get_all_studies()
+    return render_template("estudios.html", studies=studies)
+
+
 @app.route("/sujetos")
 def sujetos():
     """

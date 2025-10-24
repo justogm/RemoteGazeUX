@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/sujetos.css') }}">
+    <title>Lista de Estudios</title>
+</head>
+<body>
+	{% set active_page = 'estudios' %}
+	{% include 'navbar.html' %}
+
+	<div class="container mt-4">
+		<h1 class="text-center mb-4">Lista de Estudios</h1>
+		
+		{% if studies %}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Nombre</th>
+					<th scope="col">Descripción</th>
+					<th scope="col">URL Prototipo</th>
+					<th scope="col">Imagen</th>
+					<th scope="col">Participantes</th>
+					<th scope="col">Fecha de Creación</th>
+					<th scope="col">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for study in studies %}
+				<tr>
+					<td>{{ study.id }}</td>
+					<td><strong>{{ study.name }}</strong></td>
+					<td>{{ study.description or 'N/A' }}</td>
+					<td>
+						{% if study.prototype_url %}
+						<a href="{{ study.prototype_url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+							Ver Prototipo
+						</a>
+						{% else %}
+						N/A
+						{% endif %}
+					</td>
+					<td>{{ study.prototype_image_path or 'N/A' }}</td>
+					<td>
+						<span class="badge bg-primary">{{ study.subjects|length }}</span>
+					</td>
+					<td>{{ study.created_at.strftime('%Y-%m-%d %H:%M') if study.created_at else 'N/A' }}</td>
+					<td>
+						<a href="{{ url_for('sujetos') }}#study-{{ study.id }}" class="btn btn-sm btn-link">Ver Sujetos</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+		<div class="alert alert-info text-center" role="alert">
+			No hay estudios registrados en la base de datos.
+		</div>
+		{% endif %}
+
+		<div class="text-center mt-4">
+			<a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Volver al Inicio</a>
+			<a href="{{ url_for('sujetos') }}" class="btn btn-outline-primary">Ver Todos los Sujetos</a>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

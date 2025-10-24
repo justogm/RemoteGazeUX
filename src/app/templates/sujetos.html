@@ -9,6 +9,9 @@
     <title>Lista de Sujetos</title>
 </head>
 <body>
+	{% set active_page = 'sujetos' %}
+	{% include 'navbar.html' %}
+
 	<div class="container mt-4">
 		<h1 class="text-center mb-4">Lista de Sujetos por Estudio</h1>
 		
@@ -138,10 +141,6 @@
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript">
-		function descargarArchivo() {
-			window.location.href = '/api/download-all';
-		}
-	</script>
+    <script src="{{ url_for('static', filename='js/sujetos.js') }}"></script>
 </body>
 </html>
