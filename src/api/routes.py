@@ -165,7 +165,9 @@ def config():
         200:
             description: Configuration file.
     """
-    config_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "config")
+    config_dir = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "..", "config"
+    )
     return send_from_directory(config_dir, "config.json")
 
 

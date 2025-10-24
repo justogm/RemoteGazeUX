@@ -20,6 +20,7 @@ def test_get_subjects_after_create(client, app):
     """Test getting subjects after creating one."""
     with app.app_context():
         from repositories import SubjectRepository
+
         subject_repo = SubjectRepository()
 
         # Create a subject

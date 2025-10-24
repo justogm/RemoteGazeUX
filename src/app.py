@@ -105,13 +105,10 @@ def index():
         edad = request.form["edad"]
 
         # Get the active study ID
-        active_study_id = app.config.get('ACTIVE_STUDY_ID')
-        
+        active_study_id = app.config.get("ACTIVE_STUDY_ID")
+
         subject = subject_repository.create_subject(
-            name=nombre,
-            surname=apellido,
-            age=edad,
-            study_id=active_study_id
+            name=nombre, surname=apellido, age=edad, study_id=active_study_id
         )
         subject_repository.commit()
 
@@ -160,21 +157,20 @@ def sujetos():
     """
     # Get all studies with their subjects
     studies = study_repository.get_all_studies()
-    
+
     # Group subjects by study
     studies_data = []
     for study in studies:
-        studies_data.append({
-            'study': study,
-            'subjects': study.subjects
-        })
-    
+        studies_data.append({"study": study, "subjects": study.subjects})
+
     # Also get subjects without a study
     subjects_without_study = Subject.query.filter_by(study_id=None).all()
-    
-    return render_template("sujetos.html", 
-                          studies_data=studies_data,
-                          subjects_without_study=subjects_without_study)
+
+    return render_template(
+        "sujetos.html",
+        studies_data=studies_data,
+        subjects_without_study=subjects_without_study,
+    )
 
 
 @app.route("/resultados")
@@ -199,7 +195,9 @@ def resultados():
     subject = subject_repository.get_subject_by_id(subject_id)
 
     if subject:
-        measurements = measurement_repository.get_measurements_by_subject(subject_id=subject_id)
+        measurements = measurement_repository.get_measurements_by_subject(
+            subject_id=subject_id
+        )
 
         points = []
         for measurement in measurements:
@@ -208,7 +206,9 @@ def resultados():
                     {"x": measurement.mouse_point.x, "y": measurement.mouse_point.y}
                 )
             if measurement.gaze_point:
-                points.append({"x": measurement.gaze_point.x, "y": measurement.gaze_point.y})
+                points.append(
+                    {"x": measurement.gaze_point.x, "y": measurement.gaze_point.y}
+                )
 
         return render_template("resultados.html", sujeto=subject, puntos=points)
 
@@ -224,58 +224,70 @@ if __name__ == "__main__":
     db_manager.create_all()
 
     config_manager.print_config()
-    
+
     # Auto-create or reuse a Study from the current config
     with app.app_context():
-        url_path = config_manager.get('url_path')
-        img_path = config_manager.get('img_path')
-        
+        url_path = config_manager.get("url_path")
+        img_path = config_manager.get("img_path")
+
         # Convert 'null' strings to None
-        if url_path == 'null':
+        if url_path == "null":
             url_path = None
-        if img_path == 'null':
+        if img_path == "null":
             img_path = None
-        
+
         # Check if a study with this exact configuration already exists
         existing_study = None
         for study in study_repository.get_all_studies():
-            if study.prototype_url == url_path and study.prototype_image_path == img_path:
+            if (
+                study.prototype_url == url_path
+                and study.prototype_image_path == img_path
+            ):
                 existing_study = study
                 break
-        
+
         if existing_study:
             active_study = existing_study
-            print(f"📊 Using existing study: '{active_study.name}' (ID: {active_study.id})")
+            print(
+                f"📊 Using existing study: '{active_study.name}' (ID: {active_study.id})"
+            )
         else:
             # Configuration has changed - ask user for study name
-            print("\n" + "="*60)
+            print("\n" + "=" * 60)
             print("📊 New configuration detected!")
-            print("="*60)
+            print("=" * 60)
             if url_path:
                 print(f"Prototype URL: {url_path}")
             if img_path:
                 print(f"Prototype Image: {img_path}")
             print()
-            
-            study_name = input("Enter a name for this study (or press Enter for auto-name): ").strip()
-            
+
+            study_name = input(
+                "Enter a name for this study (or press Enter for auto-name): "
+            ).strip()
+
             if not study_name:
                 study_name = f"Study - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
-            
-            study_description = input("Enter a description (optional): ").strip() or "Created from configuration"
-            
+
+            study_description = (
+                input("Enter a description (optional): ").strip()
+                or "Created from configuration"
+            )
+
             active_study = study_repository.create_study(
                 name=study_name,
                 description=study_description,
                 prototype_url=url_path,
-                prototype_image_path=img_path
+                prototype_image_path=img_path,
             )
-            print(f"✅ Created new study: '{active_study.name}' (ID: {active_study.id})")
-            print("="*60 + "\n")
-        
+            print(
+                f"✅ Created new study: '{active_study.name}' (ID: {active_study.id})"
+            )
+            print("=" * 60 + "\n")
+
         # Store the active study ID in the app config for easy access
-        app.config['ACTIVE_STUDY_ID'] = active_study.id
-    
+        app.config["ACTIVE_STUDY_ID"] = active_study.id
+
     port = config_manager.get_port(default=5001)
 
     app.run(debug=True, ssl_context=("cert.pem", "key.pem"), port=port)

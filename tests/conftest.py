@@ -22,31 +22,40 @@ def app():
     """Create a Flask app configured for testing with an in-memory SQLite DB."""
     from flask import Flask
     from src.api.routes import api_bp
-    
+
     # Create a new Flask app instance for testing
-    test_app = Flask(__name__, 
-                     template_folder=os.path.join(SRC_DIR, "app/templates"),
-                     static_folder=os.path.join(SRC_DIR, "app/static"))
+    test_app = Flask(
+        __name__,
+        template_folder=os.path.join(SRC_DIR, "app/templates"),
+        static_folder=os.path.join(SRC_DIR, "app/static"),
+    )
 
     # Use in-memory sqlite for tests
-    test_app.config.update({
-        "TESTING": True,
-        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "SQLALCHEMY_TRACK_MODIFICATIONS": False,
-    })
+    test_app.config.update(
+        {
+            "TESTING": True,
+            "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+            "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+        }
+    )
 
     # Initialize database with test app (using the global db instance)
     db.init_app(test_app)
-    
+
     # Register blueprints
     test_app.register_blueprint(api_bp)
-    
+
     # Initialize repositories with test context
     with test_app.app_context():
         db.create_all()
-        
+
         # Import and configure repositories to use test db context
-        from src.repositories import SubjectRepository, MeasurementRepository, StudyRepository
+        from src.repositories import (
+            SubjectRepository,
+            MeasurementRepository,
+            StudyRepository,
+        )
+
         test_app.subject_repository = SubjectRepository()
         test_app.measurement_repository = MeasurementRepository()
         test_app.study_repository = StudyRepository()
@@ -57,7 +66,7 @@ def app():
     with test_app.app_context():
         db.drop_all()
         db.session.remove()
-    
+
     # Clean up the db app registry to allow fresh initialization in next test
     if test_app in db._app_engines:
         del db._app_engines[test_app]

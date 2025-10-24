@@ -10,9 +10,9 @@ from .tasklog_repository import TaskLogRepository
 from .study_repository import StudyRepository
 
 __all__ = [
-    'SubjectRepository',
-    'MeasurementRepository',
-    'PointRepository',
-    'TaskLogRepository',
-    'StudyRepository',
+    "SubjectRepository",
+    "MeasurementRepository",
+    "PointRepository",
+    "TaskLogRepository",
+    "StudyRepository",
 ]

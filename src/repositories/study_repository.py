@@ -112,7 +112,7 @@ class StudyRepository(BaseRepository[Study]):
     def get_active_study(self) -> Optional[Study]:
         """
         Get the most recently created study (assumed to be the active one).
-        
+
         Returns:
             Most recent Study or None if no studies exist
         """

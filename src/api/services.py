@@ -12,7 +12,7 @@ from repositories import (
     SubjectRepository,
     MeasurementRepository,
     PointRepository,
-    TaskLogRepository
+    TaskLogRepository,
 )
 
 
@@ -103,7 +103,6 @@ class MeasurementService:
         return {"subject_id": subject_id, "points": points}
 
 
-
 class TaskLogService:
     """Service class for managing task logs."""
 
@@ -152,7 +151,6 @@ class TaskLogService:
         return {"subject_id": subject_id, "task_logs": task_logs_info}
 
 
-
 class ExportService:
     """Service class for data export functionality."""
 
@@ -168,7 +166,9 @@ class ExportService:
         if not subject:
             return None
 
-        measurements = self.measurement_repository.get_measurements_by_subject(subject.id)
+        measurements = self.measurement_repository.get_measurements_by_subject(
+            subject.id
+        )
 
         si = io.StringIO()
         csv_writer = csv.writer(si)
@@ -237,4 +237,3 @@ class ExportService:
 
         si.seek(0)
         return io.BytesIO(si.getvalue().encode("utf-8"))
-

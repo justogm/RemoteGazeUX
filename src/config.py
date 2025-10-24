@@ -6,6 +6,7 @@ from ttkbootstrap.constants import *
 from tkinter import filedialog, messagebox
 from urllib.parse import urlparse
 
+
 def is_valid_url(url):
     try:
         result = urlparse(url)
@@ -15,6 +16,7 @@ def is_valid_url(url):
 
 
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), "config/config.json")
+
 
 def load_config():
     if os.path.exists(CONFIG_FILE):
@@ -38,7 +40,9 @@ def save_config():
         return
 
     if url != "null" and not is_valid_url(url):
-        messagebox.showerror("Error", "Invalid URL. Must start with http:// or https://")
+        messagebox.showerror(
+            "Error", "Invalid URL. Must start with http:// or https://"
+        )
         return
 
     if port != "null" and not port.isdigit():
@@ -55,6 +59,7 @@ def save_config():
 
     app.destroy()
 
+
 def open_task_editor():
     """Open the task editor"""
     try:
@@ -64,14 +69,15 @@ def open_task_editor():
     except Exception as e:
         messagebox.showerror("Error", f"Could not open task editor: {e}")
 
+
 def select_image():
     filename = filedialog.askopenfilename(
-        title="Select Image",
-        filetypes=[("Images", "*.png;*.jpg;*.jpeg;*.gif")]
+        title="Select Image", filetypes=[("Images", "*.png;*.jpg;*.jpeg;*.gif")]
     )
     if filename:
         img_var.set(filename)
         url_var.set("")
+
 
 # -------- GUI --------
 app = ttk.Window(themename="superhero")
@@ -80,7 +86,7 @@ app.geometry("550x300")
 app.minsize(500, 250)
 
 style = ttk.Style()
-style.configure('.', font=('Roboto', 11))
+style.configure(".", font=("Roboto", 11))
 
 cfg = load_config()
 
@@ -96,34 +102,42 @@ ttk.Label(frame, text="Image Path:").grid(row=1, column=0, padx=10, pady=5, stic
 img_var = ttk.StringVar(value=cfg.get("img_path") or "")
 img_entry = ttk.Entry(frame, textvariable=img_var, width=40)
 img_entry.grid(row=1, column=1, padx=10, pady=5)
-ttk.Button(frame, text="Browse...", bootstyle="secondary", command=select_image)\
-    .grid(row=1, column=2, padx=5, pady=5)
+ttk.Button(frame, text="Browse...", bootstyle="secondary", command=select_image).grid(
+    row=1, column=2, padx=5, pady=5
+)
 
 ttk.Label(frame, text="Port:").grid(row=2, column=0, padx=10, pady=5, sticky="e")
 port_var = ttk.StringVar(value=cfg.get("port") if cfg.get("port") != None else "")
-ttk.Entry(frame, textvariable=port_var, width=10).grid(row=2, column=1, padx=10, pady=5, sticky="w")
+ttk.Entry(frame, textvariable=port_var, width=10).grid(
+    row=2, column=1, padx=10, pady=5, sticky="w"
+)
 
-ttk.Button(frame, text="Save Configuration", bootstyle="success", command=save_config)\
-    .grid(row=3, column=0, columnspan=3, pady=20)
+ttk.Button(
+    frame, text="Save Configuration", bootstyle="success", command=save_config
+).grid(row=3, column=0, columnspan=3, pady=20)
 
-ttk.Button(frame, text="Task Editor", bootstyle="info", command=open_task_editor)\
-    .grid(row=4, column=0, columnspan=3, pady=10)
+ttk.Button(frame, text="Task Editor", bootstyle="info", command=open_task_editor).grid(
+    row=4, column=0, columnspan=3, pady=10
+)
+
 
 # -------- Mutual exclusion --------
 def on_url_change(*args):
     if url_var.get().strip():
-        img_entry.config(state='disabled')
+        img_entry.config(state="disabled")
     else:
-        img_entry.config(state='normal')
+        img_entry.config(state="normal")
+
 
 def on_img_change(*args):
     if img_var.get().strip():
-        url_entry.config(state='disabled')
+        url_entry.config(state="disabled")
     else:
-        url_entry.config(state='normal')
+        url_entry.config(state="normal")
 
-url_var.trace_add('write', on_url_change)
-img_var.trace_add('write', on_img_change)
+
+url_var.trace_add("write", on_url_change)
+img_var.trace_add("write", on_img_change)
 
 on_url_change()
 on_img_change()
