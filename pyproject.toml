@@ -1,6 +1,6 @@
 [project]
 name = "user-gaze-track"
-version = "0.0.0"
+version = "1.0.0"
 description = "User Gaze Track - gaze tracking web app for conducting remote user studies"
 readme = "README.md"
 license = { text = "GPL-3.0" }
