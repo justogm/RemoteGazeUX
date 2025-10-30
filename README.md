@@ -25,7 +25,10 @@ Designed to streamline remote user studies, reduce logistical overhead, and enab
 
 4. **Results Page for a subject (/resultados?id={sujeto}):** View the gaze heatmap for a subject and download their data as CSV.
 
-## Installation and Usage
+
+<div align="center">
+    <h2> Installation and Usage </h2>
+</div>
 
 ### 1. Clone this repository
 
@@ -42,7 +45,10 @@ python run.py
 
 This will start to install dependencies and prompting to modify or not the existing configuration and tasks. Then it will start running the flask application.
 
-## Configuration
+
+<div align="center">
+    <h2>Configuration</h2>
+</div>
 
 You can change the configuration by GUI in any moment by running ():
 
@@ -53,19 +59,25 @@ python src/config.py
 
 When a URL or image path is modified, the system checks for its existence in the database. If not found, the application will either prompt for a study name or automatically apply the associated name during the next run.
 
-## Important
+<div align="center">
+    <h2>Important</h2>
+</div>
 
 > [!CAUTION]
 > This tool is under development and intended for controlled environments. It currently has serious security vulnerabilities and is not recommended for production use.
 
-## Tech Stack
+<div align="center">
+    <h2>Tech Stack</h2>
+</div>
 
 - [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 - [WebGazer.js](https://webgazer.cs.brown.edu/)
 - [heatmap.js](https://www.patrick-wied.at/static/heatmapjs/)
 - [SQLite](https://www.sqlite.org/index.html)
 
-## Screenshots
+<div align="center">
+    <h2>Showcase</h2>
+</div>
 
 ### 1. Data Entry
 
@@ -79,7 +91,10 @@ Can be modified to register other variables considered relevant.
 
 *The calibration instructions image is provided by the module; consider creating a translated version if needed.*
 
-### Accessing your data
+
+<div align="center">
+    <h2>Accessing your data</h2>
+</div>
 
 After conducting your remote user studies you can access the data at (`/sujetos`). It will show you different tabs for the different studies that you have registered.
 
@@ -87,9 +102,9 @@ After conducting your remote user studies you can access the data at (`/sujetos`
 
 There you can navigate through your studies, in each studies through your users and access their individual data and pre visualize or download some animations or heatmaps. Also you can download all the data for a given study with the button in the left bottom corner.
 
-## Contribution
-
-## Contributing
+<div align="center">
+    <h2>Contributions</h2>
+</div>
 
 Contributions welcome. Preferred workflow: fork → branch → PR.
 
@@ -102,12 +117,16 @@ Contributions welcome. Preferred workflow: fork → branch → PR.
 
 Thanks for helping improve the project!
 
-## Roadmap
+<div align="center">
+    <h2>Contact</h2>
+</div>
 
-- [ ] Evaluate module behavior when the prototype is in fullscreen mode.
-- [x] Explore alternatives for prototype presentation.
-- [x] Make it easier to change the prototype instead of leaving it hardcoded.
-  - A configuration file was created; see the [configuration section](#4-configure-the-tool).
-- [x] Develop a parallel app for accessing and manipulating generated data.
-  - The route `/sujetos` was developed
-- [x] Habilitate to store data from multiples studies.
+- Justo Garcia (Main developer and mantainer): [justo.garcia@ingenieria.uner.edu.ar](mailto:justo.garcia@ingenieria.uner.edu.ar)
+
+<div align="center">
+    <h2>Contributors</h2>
+</div>
+
+<a href="https://github.com/justogm/RemoteGazeUX/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=justogm/RemoteGazeUX" />
+</a>
