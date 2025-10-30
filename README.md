@@ -50,7 +50,7 @@ This will start to install dependencies and prompting to modify or not the exist
     <h2>Configuration</h2>
 </div>
 
-You can change the configuration by GUI in any moment by running ():
+You can change the configuration by GUI in any moment by running:
 
 ```bash
 # remember activating the venv or conda environment
@@ -70,10 +70,10 @@ When a URL or image path is modified, the system checks for its existence in the
     <h2>Tech Stack</h2>
 </div>
 
-- [Flask](https://flask.palletsprojects.com/en/3.0.x/)
-- [WebGazer.js](https://webgazer.cs.brown.edu/)
-- [heatmap.js](https://www.patrick-wied.at/static/heatmapjs/)
-- [SQLite](https://www.sqlite.org/index.html)
+- [Flask](https://flask.palletsprojects.com/en/3.0.x/): Backend.
+- [WebGazer.js](https://webgazer.cs.brown.edu/): JS module for gaze tracking.
+- [heatmap.js](https://www.patrick-wied.at/static/heatmapjs/): JS module for heatmaps plotting.
+- [SQLite](https://www.sqlite.org/index.html): DB engine.
 
 <div align="center">
     <h2>Showcase</h2>
@@ -121,7 +121,7 @@ Thanks for helping improve the project!
     <h2>Contact</h2>
 </div>
 
-- Justo Garcia (Main developer and mantainer): [justo.garcia@ingenieria.uner.edu.ar](mailto:justo.garcia@ingenieria.uner.edu.ar)
+- Justo Garcia (Main developer and maintainer): [justo.garcia@ingenieria.uner.edu.ar](mailto:justo.garcia@ingenieria.uner.edu.ar)
 
 <div align="center">
     <h2>Contributors</h2>
