@@ -1,8 +1,21 @@
-# User Gaze Tracking Tool for Prototypes
+<h1 align="center">
+RemoteGazeUX
+</h1>
+
+<h2 align="center">
+An open-source platform for remote usability testing through eye and mouse tracking on web prototypes.
+</h2>
+
+<div align="center">
+
+![](https://img.shields.io/github/check-runs/justogm/RemoteGazeUX/main?nameFilter=build&style=for-the-badge&color=8ad7eb)
+![](https://img.shields.io/github/license/justogm/RemoteGazeUX?style=for-the-badge&color=8ad7eb)
+
+</div>
 
 A web application that uses WebGazer.js to record participants’ gaze while presenting a prototype or image and assigning tasks. It is intended for remote user studies: it simplifies the collection, storage, and export of gaze and mouse data without requiring participants to be physically present.
 
-This tool is designed to streamline remote user studies, reduce logistical overhead, and enable reproducible collection of users' behavior data.
+Designed to streamline remote user studies, reduce logistical overhead, and enable reproducible collection of users' behavior data.
 
 1. **Home Page (/):** Contains a data entry form. Users should fill the form and click "Submit" to proceed.
 
@@ -17,8 +30,8 @@ This tool is designed to streamline remote user studies, reduce logistical overh
 ### 1. Clone this repository
 
 ```bash
-git clone https://github.com/justogm/user-gaze-track.git
-cd user-gaze-track
+git clone https://github.com/justogm/RemoteGazeUX.git
+cd RemoteGazeUX
 ```
 
 ### 2. Run the tool
@@ -73,6 +86,21 @@ After conducting your remote user studies you can access the data at (`/sujetos`
 ![Accessing data](assets/readme/accessing_data.png)
 
 There you can navigate through your studies, in each studies through your users and access their individual data and pre visualize or download some animations or heatmaps. Also you can download all the data for a given study with the button in the left bottom corner.
+
+## Contribution
+
+## Contributing
+
+Contributions welcome. Preferred workflow: fork → branch → PR.
+
+- Keep changes small and focused.
+- Add/update tests and docs for your change.
+- Run tests and linters locally before opening a PR.
+- Reference related issue(s) and include a short description of the change.
+- For large or architectural changes, open an issue to discuss first.
+- Respect the project license.
+
+Thanks for helping improve the project!
 
 ## Roadmap
 
