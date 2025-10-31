@@ -118,6 +118,12 @@ Contributions welcome. Preferred workflow: fork → branch → PR.
 Thanks for helping improve the project!
 
 <div align="center">
+    <h2>Roadmap</h2>
+</div>
+
+- [ ] Add user validation for the routes of admin
+
+<div align="center">
     <h2>Contact</h2>
 </div>
 
