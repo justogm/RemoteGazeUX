@@ -4,7 +4,7 @@ Database initialization and configuration module.
 
 from .db_config import DatabaseConfig
 from .db_manager import DatabaseManager
-from .models import db, Subject, Measurement, Point, TaskLog
+from .models import db, Subject, Measurement, Point, TaskLog, User
 
 __all__ = [
     "DatabaseConfig",
@@ -14,4 +14,5 @@ __all__ = [
     "Measurement",
     "Point",
     "TaskLog",
+    "User",
 ]
