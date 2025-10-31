@@ -332,23 +332,37 @@ if __name__ == "__main__":
 
     config_manager.print_config()
 
-    # Check and create first user if needed
+    # User management on startup
     with app.app_context():
         from db.models import User
+        import getpass
         
         user_count = User.query.count()
+        print(f"\n🔐 Current users in database: {user_count}")
         
-        if user_count == 0:
-            print("\n" + "=" * 60)
-            print("🔐 NO USERS FOUND - CREATE FIRST USER")
-            print("=" * 60 + "\n")
+        # Always ask if they want to create users
+        while True:
+            create_user = input("Do you want to create a new user? (y/n): ").strip().lower()
+            if create_user not in ['y', 'n', 'yes', 'no']:
+                print("❌ Please enter 'y' or 'n'.")
+                continue
             
-            import getpass
+            if create_user in ['n', 'no']:
+                break
+            
+            # Create user
+            print("\n" + "=" * 60)
+            print("👥 CREATE NEW USER")
+            print("=" * 60 + "\n")
             
             while True:
                 username = input("Username: ").strip()
                 if not username:
                     print("❌ Username cannot be empty.")
+                    continue
+                # Check if username already exists
+                if user_repository.get_user_by_username(username):
+                    print(f"❌ Username '{username}' already exists.")
                     continue
                 break
             
@@ -368,8 +382,8 @@ if __name__ == "__main__":
             
             print(f"\n✅ User '{username}' created successfully!")
             print("=" * 60 + "\n")
-        else:
-            print(f"🔐 {user_count} user(s) found in database.")
+        
+        print(f"🔐 Total users in database: {User.query.count()}\n")
 
     # Auto-create or reuse a Study from the current config
     with app.app_context():
