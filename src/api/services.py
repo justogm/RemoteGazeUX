@@ -7,12 +7,13 @@ import csv
 import io
 from datetime import datetime
 import numpy as np
-from db import db, Subject, Point, Measurement, TaskLog
+from db import db, Subject, Point, Measurement, TaskLog, User
 from repositories import (
     SubjectRepository,
     MeasurementRepository,
     PointRepository,
     TaskLogRepository,
+    UserRepository,
 )
 
 
@@ -237,3 +238,40 @@ class ExportService:
 
         si.seek(0)
         return io.BytesIO(si.getvalue().encode("utf-8"))
+
+
+class UserService:
+    """Service class for managing users."""
+
+    def __init__(self):
+        self.repository = UserRepository()
+
+    def get_user_count(self):
+        """Get the total number of users."""
+        return User.query.count()
+
+    def create_user(self, data):
+        """Create a new user."""
+        username = data.get("username")
+        password = data.get("password")
+
+        if not username or not password:
+            return {"status": "error", "message": "Username and password are required"}
+
+        if self.repository.user_exists(username):
+            return {"status": "error", "message": f"User '{username}' already exists"}
+
+        if len(password) < 4:
+            return {
+                "status": "error",
+                "message": "Password must be at least 4 characters",
+            }
+
+        user = self.repository.create_user(username=username, password=password)
+        self.repository.commit()
+
+        return {
+            "status": "success",
+            "message": f"User '{username}' created successfully",
+            "user": {"id": user.id, "username": user.username},
+        }

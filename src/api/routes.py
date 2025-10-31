@@ -3,7 +3,13 @@ API routes for the user gaze tracking application.
 """
 
 from flask import Blueprint, request, jsonify, send_file, send_from_directory
-from .services import SubjectService, MeasurementService, TaskLogService, ExportService
+from .services import (
+    SubjectService,
+    MeasurementService,
+    TaskLogService,
+    ExportService,
+    UserService,
+)
 import os
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
@@ -13,6 +19,7 @@ subject_service = SubjectService()
 measurement_service = MeasurementService()
 tasklog_service = TaskLogService()
 export_service = ExportService()
+user_service = UserService()
 
 
 @api_bp.route("/get-subjects", methods=["GET"])
@@ -266,3 +273,47 @@ def download_all():
         )
     else:
         return "No registered subjects", 404
+
+
+@api_bp.route("/users/count", methods=["GET"])
+def get_user_count():
+    """
+    Returns the number of users in the system.
+    ---
+    responses:
+        200:
+            description: JSON with user count.
+    """
+    count = user_service.get_user_count()
+    return jsonify({"count": count})
+
+
+@api_bp.route("/users/create", methods=["POST"])
+def create_user():
+    """
+    Creates a new user.
+    ---
+    parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+    responses:
+        201:
+            description: User created successfully.
+        400:
+            description: Invalid request or user already exists.
+    """
+    data = request.get_json()
+    result = user_service.create_user(data)
+    
+    if result.get("status") == "success":
+        return jsonify(result), 201
+    else:
+        return jsonify(result), 400
