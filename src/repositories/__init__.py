@@ -8,6 +8,7 @@ from .measurement_repository import MeasurementRepository
 from .point_repository import PointRepository
 from .tasklog_repository import TaskLogRepository
 from .study_repository import StudyRepository
+from .user_repository import UserRepository
 
 __all__ = [
     "SubjectRepository",
@@ -15,4 +16,5 @@ __all__ = [
     "PointRepository",
     "TaskLogRepository",
     "StudyRepository",
+    "UserRepository",
 ]
