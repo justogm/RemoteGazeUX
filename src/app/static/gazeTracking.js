@@ -36,6 +36,12 @@ class GazeTracker {
         .saveDataAcrossSessions(true)
         .begin();
 
+      // Verify that the video stream is available
+      const isVideoStreamReady = await this.checkVideoStream();
+      if (!isVideoStreamReady) {
+        throw new Error("No se pudo iniciar el stream de la cámara. Por favor, verifica que la cámara esté conectada y que hayas dado los permisos necesarios.");
+      }
+
       // Configure webgazer
       webgazer
         .showVideoPreview(false)
@@ -61,6 +67,44 @@ class GazeTracker {
       console.error("Error initializing GazeTracker:", error);
       throw error;
     }
+  }
+
+  /**
+   * Check if the video stream is ready and working
+   * @returns {Promise<boolean>} True if video stream is available
+   */
+  async checkVideoStream() {
+    return new Promise((resolve) => {
+      let attempts = 0;
+      const maxAttempts = 30; // 3 seconds (30 * 100ms)
+      
+      const checkInterval = setInterval(() => {
+        attempts++;
+        
+        // Try to find the video element
+        const videoElement = document.querySelector('#webgazerVideoFeed');
+        
+        if (videoElement) {
+          // Check if video has a valid stream
+          if (videoElement.srcObject && videoElement.srcObject.active) {
+            const videoTracks = videoElement.srcObject.getVideoTracks();
+            if (videoTracks.length > 0 && videoTracks[0].readyState === 'live') {
+              console.log("Video stream is ready and active");
+              clearInterval(checkInterval);
+              resolve(true);
+              return;
+            }
+          }
+        }
+        
+        // If max attempts reached, assume failure
+        if (attempts >= maxAttempts) {
+          console.error("Video stream not detected after maximum attempts");
+          clearInterval(checkInterval);
+          resolve(false);
+        }
+      }, 100);
+    });
   }
 
   /**

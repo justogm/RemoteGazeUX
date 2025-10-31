@@ -37,7 +37,64 @@ document.addEventListener("DOMContentLoaded", function () {
 window.onload = async function () {
   // Initialize the gaze tracker
   if (gazeTracker) {
-    await gazeTracker.initialize();
+    try {
+      await gazeTracker.initialize();
+    } catch (error) {
+      // Show error message to the user
+      const errorMessage = document.createElement('div');
+      errorMessage.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 2px solid #f5c6cb;
+        border-radius: 8px;
+        padding: 30px;
+        max-width: 500px;
+        text-align: center;
+        z-index: 10000;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      `;
+      errorMessage.innerHTML = `
+        <h3 style="margin-top: 0;">⚠️ Error de Cámara</h3>
+        <p style="margin-bottom: 20px;">
+          ${error.message || 'No se pudo acceder a la cámara. Por favor, verifica que esté conectada y que hayas dado los permisos necesarios.'}
+        </p>
+        <p style="font-size: 0.9em; margin-bottom: 20px;">
+          Para continuar con el estudio, necesitas:
+        </p>
+        <ul style="text-align: left; margin-bottom: 20px;">
+          <li>Permitir el acceso a la cámara en tu navegador</li>
+          <li>Verificar que la cámara esté conectada y funcionando</li>
+          <li>Intentar con otro navegador si el problema persiste</li>
+        </ul>
+        <button id="reload-btn" style="
+          background-color: #721c24;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+        ">Recargar Página</button>
+      `;
+      
+      document.body.appendChild(errorMessage);
+      
+      // Add reload functionality
+      document.getElementById('reload-btn').addEventListener('click', () => {
+        window.location.reload();
+      });
+      
+      // Hide calibration points and prevent interaction
+      document.querySelectorAll('.Calibration').forEach((element) => {
+        element.style.display = 'none';
+      });
+      
+      console.error('Camera initialization failed:', error);
+    }
   }
 };
 
