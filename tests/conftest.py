@@ -21,6 +21,7 @@ from db import db, DatabaseManager
 def app():
     """Create a Flask app configured for testing with an in-memory SQLite DB."""
     from flask import Flask
+    from flask_login import LoginManager
     from src.api.routes import api_bp
 
     # Create a new Flask app instance for testing
@@ -36,11 +37,24 @@ def app():
             "TESTING": True,
             "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
             "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+            "SECRET_KEY": "test-secret-key",
+            "WTF_CSRF_ENABLED": False,  # Disable CSRF for testing
         }
     )
 
     # Initialize database with test app (using the global db instance)
     db.init_app(test_app)
+
+    # Initialize Flask-Login
+    login_manager = LoginManager()
+    login_manager.init_app(test_app)
+    login_manager.login_view = "login"
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        from repositories import UserRepository
+        user_repo = UserRepository()
+        return user_repo.get_by_id(int(user_id))
 
     # Register blueprints
     test_app.register_blueprint(api_bp)
@@ -54,11 +68,13 @@ def app():
             SubjectRepository,
             MeasurementRepository,
             StudyRepository,
+            UserRepository,
         )
 
         test_app.subject_repository = SubjectRepository()
         test_app.measurement_repository = MeasurementRepository()
         test_app.study_repository = StudyRepository()
+        test_app.user_repository = UserRepository()
 
     yield test_app
 

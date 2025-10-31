@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap.css') }}"
+    />
+    <title>Login - User Gaze Track</title>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .login-container {
+        width: 100%;
+        max-width: 400px;
+        padding: 15px;
+      }
+      .login-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        padding: 40px;
+      }
+      .login-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        font-weight: 600;
+      }
+      .btn-login {
+        width: 100%;
+        padding: 12px;
+        font-weight: 600;
+      }
+      .alert {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <h2 class="login-title">🔐 User Gaze Track</h2>
+        
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="post">
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input
+              type="text"
+              name="username"
+              class="form-control"
+              id="username"
+              placeholder="Ingresa tu usuario"
+              required
+              autofocus
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              id="password"
+              placeholder="Ingresa tu contraseña"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-login">
+            Iniciar Sesión
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

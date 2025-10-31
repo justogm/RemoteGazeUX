@@ -9,12 +9,25 @@ from flask import (
     request,
     redirect,
     url_for,
+    flash,
+)
+from flask_login import (
+    LoginManager,
+    login_user,
+    logout_user,
+    login_required,
+    current_user,
 )
 from flasgger import Swagger
-from db import DatabaseConfig, DatabaseManager, db, Subject, Measurement
+from db import DatabaseConfig, DatabaseManager, db, Subject, Measurement, User
 from api.routes import api_bp
 from state import ConfigManager
-from repositories import SubjectRepository, MeasurementRepository, StudyRepository
+from repositories import (
+    SubjectRepository,
+    MeasurementRepository,
+    StudyRepository,
+    UserRepository,
+)
 from datetime import datetime
 
 
@@ -25,6 +38,9 @@ config_manager.load_config()
 
 app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
 
+# Secret key for sessions (change this to a random secret in production!)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-production")
+
 db_config = DatabaseConfig(basedir)
 db_config.configure_app(app)
 
@@ -33,6 +49,20 @@ db_manager = DatabaseManager(app)
 subject_repository = SubjectRepository()
 measurement_repository = MeasurementRepository()
 study_repository = StudyRepository()
+user_repository = UserRepository()
+
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+login_manager.login_message = "Por favor inicia sesión para acceder a esta página."
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """Load user by ID for Flask-Login."""
+    return user_repository.get_by_id(int(user_id))
+
 
 app.register_blueprint(api_bp)
 
@@ -72,6 +102,66 @@ swagger_template = {
 }
 
 swagger = Swagger(app, config=swagger_config, template=swagger_template)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """
+    Login page for authentication.
+    ---
+    tags:
+      - web
+    parameters:
+      - name: username
+        in: formData
+        type: string
+        required: true
+        description: Username for login.
+      - name: password
+        in: formData
+        type: string
+        required: true
+        description: Password for login.
+    responses:
+      200:
+        description: Login page or redirect to home on success.
+      401:
+        description: Invalid credentials.
+    """
+    # Redirect to home if already logged in
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        user = user_repository.get_user_by_username(username)
+
+        if user and user.check_password(password):
+            login_user(user)
+            next_page = request.args.get("next")
+            return redirect(next_page if next_page else url_for("index"))
+        else:
+            return render_template("login.html", error="Usuario o contraseña incorrectos")
+
+    return render_template("login.html")
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    """
+    Logout the current user.
+    ---
+    tags:
+      - web
+    responses:
+      302:
+        description: Redirect to login page.
+    """
+    logout_user()
+    return redirect(url_for("login"))
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -147,6 +237,7 @@ def fin_medicion():
 
 
 @app.route("/estudios")
+@login_required
 def estudios():
     """
     Shows the list of all studies in the database.
@@ -160,6 +251,7 @@ def estudios():
 
 
 @app.route("/sujetos")
+@login_required
 def sujetos():
     """
     Shows the list of registered subjects in the database.
@@ -187,6 +279,7 @@ def sujetos():
 
 
 @app.route("/resultados")
+@login_required
 def resultados():
     """
     Shows the results of registered points for a specific subject and allows download.
@@ -229,6 +322,7 @@ def resultados():
 
 
 @app.route("/visualizacion")
+@login_required
 def visualizacion():
     return render_template("visualizacion.html")
 
@@ -237,6 +331,45 @@ if __name__ == "__main__":
     db_manager.create_all()
 
     config_manager.print_config()
+
+    # Check and create first user if needed
+    with app.app_context():
+        from db.models import User
+        
+        user_count = User.query.count()
+        
+        if user_count == 0:
+            print("\n" + "=" * 60)
+            print("🔐 NO USERS FOUND - CREATE FIRST USER")
+            print("=" * 60 + "\n")
+            
+            import getpass
+            
+            while True:
+                username = input("Username: ").strip()
+                if not username:
+                    print("❌ Username cannot be empty.")
+                    continue
+                break
+            
+            while True:
+                password = getpass.getpass("Password: ")
+                if len(password) < 4:
+                    print("❌ Password must be at least 4 characters.")
+                    continue
+                password_confirm = getpass.getpass("Confirm password: ")
+                if password != password_confirm:
+                    print("❌ Passwords do not match.")
+                    continue
+                break
+            
+            user = user_repository.create_user(username=username, password=password)
+            user_repository.commit()
+            
+            print(f"\n✅ User '{username}' created successfully!")
+            print("=" * 60 + "\n")
+        else:
+            print(f"🔐 {user_count} user(s) found in database.")
 
     # Auto-create or reuse a Study from the current config
     with app.app_context():
