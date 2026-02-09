@@ -1,0 +1,12 @@
+cff-version: 1.0.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Justo
+    given-names: Garcia
+    orcid: https://orcid.org/0009-0008-8540-3680
+title: "RemoteGazeUX"
+version: 1.0.0
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.18549609
+date-released: 2025-02-09
