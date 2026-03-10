@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+<title>Task Editor</title>
+</head>
+
+<body class="container mt-4">
+
+<h2 class="mb-4">Task Editor</h2>
+
+<h4>Existing Tasks</h4>
+
+<table class="table table-striped">
+<thead>
+<tr>
+<th>Task</th>
+<th>Type</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for task in tasks %}
+
+<tr>
+<td>{{ task.task }}</td>
+<td>{{ task.type }}</td>
+
+<td>
+
+<form method="POST" style="display:inline">
+<input type="hidden" name="action" value="delete">
+<input type="hidden" name="index" value="{{ loop.index0 }}">
+<button class="btn btn-danger btn-sm">Delete</button>
+</form>
+
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+
+<hr>
+
+<h4>Add New Task</h4>
+
+<form method="POST">
+
+<input type="hidden" name="action" value="add">
+
+<div class="mb-3">
+<label class="form-label">Task description</label>
+<textarea class="form-control" name="task" rows="3"></textarea>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Type</label>
+
+<select class="form-select" name="type">
+<option value="bool">bool</option>
+<option value="numeric">numeric</option>
+<option value="text">text</option>
+</select>
+
+</div>
+
+<button class="btn btn-primary">Add Task</button>
+
+</form>
+
+<hr class="mt-4">
+
+<div class="d-flex gap-2 mt-3">
+
+<a href="/" class="btn btn-secondary">
+Back to Setup
+</a>
+
+</div>
+
+</body>
+</html>

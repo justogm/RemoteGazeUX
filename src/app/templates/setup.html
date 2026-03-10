@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>Prototype Configuration</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+<div class="row justify-content-center">
+
+<div class="col-md-6">
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h4 class="card-title mb-4 text-center">
+Prototype Configuration
+</h4>
+
+{% if error %}
+<div class="alert alert-danger">
+{{ error }}
+</div>
+{% endif %}
+
+{% if success %}
+<div class="alert alert-success">
+Configuration saved. You can close this tab.
+</div>
+
+<script>
+
+setTimeout(() => {
+
+    // intentar cerrar
+    window.close()
+
+    // fallback: reemplazar contenido
+    document.body.innerHTML = `
+        <div style="font-family:sans-serif; text-align:center; margin-top:80px">
+            <h2>Configuration completed</h2>
+            <p>You can close this tab and return to the terminal.</p>
+        </div>
+    `
+
+}, 1200)
+
+</script>
+{% endif %}
+
+<form method="post">
+
+<div class="mb-3">
+<label class="form-label">URL Path</label>
+<input class="form-control" id="url_input" name="url_path" value="{{ cfg.url_path }}">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Image Path</label>
+<input class="form-control" id="img_input" name="img_path" value="{{ cfg.img_path }}">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Port</label>
+<input class="form-control" name="port" value="{{ cfg.port }}">
+</div>
+
+<button class="btn btn-primary w-100" type="submit">
+Save Configuration
+</button>
+
+</form>
+
+<a href="/tasks" class="btn btn-info w-100 mt-3" onclick="formSaved=true">
+Task Editor
+</a>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+
+<script>
+
+const urlInput = document.getElementById("url_input")
+const imgInput = document.getElementById("img_input")
+
+urlInput.addEventListener("input", () => {
+    imgInput.disabled = urlInput.value.trim() !== ""
+})
+
+imgInput.addEventListener("input", () => {
+    urlInput.disabled = imgInput.value.trim() !== ""
+})
+
+
+
+let formSaved = false;
+
+window.onbeforeunload = function () {
+    if (!formSaved) {
+        return "You have unsaved changes.";
+    }
+};
+
+document.querySelector("form").addEventListener("submit", function () {
+    formSaved = true;
+});
+
+
+
+</script>
+
+</body>
+</html>

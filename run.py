@@ -12,6 +12,9 @@ import shutil
 from pathlib import Path
 from datetime import datetime, timedelta
 import ipaddress
+import webbrowser
+import time
+import subprocess
 
 
 class GazeTrackRunner:
@@ -339,22 +342,25 @@ print("- key.pem (clave privada)")
             return True
 
     def ask_for_configuration(self, python_path):
-        """Ask whether the user wants to configure the application"""
-        print()
-        try:
-            choice = input(
-                "Do you want to modify configurations before running the application? (y/n): "
-            )
-            if choice.lower() in ["s", "sí", "si", "y", "yes"]:
-                self.print_step("Opening configurator...", "⚙️")
-                if self.run_command(f'"{python_path}" src/config.py'):
-                    self.print_step("Configuration completed.", "✅")
-                else:
-                    print("❌ Error opening configurator")
-                    return False
-        except KeyboardInterrupt:
-            print("\n❌ Cancelled by user")
-            return False
+
+        choice = input(
+            "Do you want to modify configurations before running the application? (y/n): "
+        )
+
+        if choice.lower() in ["y", "yes", "si", "s"]:
+
+            self.print_step("Launching configurator...", "⚙️")
+
+            proc = subprocess.Popen([python_path, "src/config.py"])
+
+            time.sleep(2)
+
+            webbrowser.open("http://localhost:5001")
+
+            proc.wait()
+
+            self.print_step("Configuration completed.", "✅")
+
         return True
 
     def run_application(self, python_path):
