@@ -41,6 +41,7 @@ class Subject(db.Model):
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)
     age = db.Column(db.Integer, nullable=False)
+    accuracy = db.Column(db.Float, nullable=True)
     study_id = db.Column(db.Integer, db.ForeignKey("study.id"), nullable=True)
 
     # Relationship to study

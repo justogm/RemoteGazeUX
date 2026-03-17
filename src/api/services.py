@@ -53,6 +53,8 @@ class MeasurementService:
         points = data["points"]
         subject_id = data["id"]
 
+        print(f"[DEBUG] Guardando {len(points)} puntos para el sujeto {subject_id}")
+
         for point in points:
             date = datetime.strptime(point["date"], "%m/%d/%Y, %I:%M:%S %p")
 
@@ -66,15 +68,32 @@ class MeasurementService:
                 y=point["mouse"]["y"],
             )
 
-            self.repository.create_measurement(
+            measurement = self.repository.create_measurement(
                 date=date,
                 subject_id=subject_id,
                 gaze_point=gaze_point,
                 mouse_point=mouse_point,
             )
+            print(f"[DEBUG] Medición creada: {measurement.id} para sujeto {subject_id}")
 
         self.repository.commit()
+        print(f"[DEBUG] Puntos guardados exitosamente")
         return {"status": "success"}
+
+    def save_accuracy(self, data):
+        """Save the accuracy measurement for a subject."""
+        subject_id = data["id"]
+        accuracy = data.get("accuracy")
+
+        if accuracy is not None:
+            subject_repository = SubjectRepository()
+            subject = subject_repository.get_subject_by_id(subject_id)
+            if subject:
+                subject.accuracy = accuracy
+                subject_repository.commit()
+                return {"status": "success", "message": "Accuracy saved successfully."}
+
+        return {"status": "error", "message": "Invalid accuracy value or subject not found."}
 
     def get_user_points(self, subject_id):
         """Get measurement points for a specific subject."""
