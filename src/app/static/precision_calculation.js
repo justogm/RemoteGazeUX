@@ -55,10 +55,10 @@ function calculatePrecisionPercentages(precisionPercentages, windowHeight, x50, 
  */
 function calculateAverage(precisionPercentages) {
   var precision = 0;
-  for (let x = 0; x < 50; x++) {
+  for (let x = 0; x < 10; x++) {
     precision += precisionPercentages[x];
   }
-  precision = precision / 50;
+  precision = precision / 10;
   return precision;
 }
 
