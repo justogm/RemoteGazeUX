@@ -68,14 +68,14 @@ export class GazeTracker {
 
       // Configure webgazer
       webgazer
-        .showVideoPreview(false)
-        .showPredictionPoints(false)
+        .showVideoPreview(true)
+        .showPredictionPoints(true)
         .applyKalmanFilter(true);
 
       // Hide video after initialization
-      setTimeout(() => {
-        this.hideWebgazerVideo();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.hideWebgazerVideo();
+      // }, 1000);
 
       // Set up gaze listener
       this.setupGazeListener();
