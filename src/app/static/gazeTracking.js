@@ -388,6 +388,11 @@ export class GazeTracker {
     this.pointCalibrate = 0;
     this.calibrationPoints = {};
     this.calibrated = false;
+    webgazer
+        .showVideoPreview(true)
+        .showPredictionPoints(true)
+        .applyKalmanFilter(true);
+    location.reload();
   }
 
   /**
