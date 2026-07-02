@@ -455,4 +455,5 @@ if __name__ == "__main__":
     print(f"🔗 URL: https://localhost:{port}")
     print("=" * 60 + "\n")
 
-    app.run(debug=True, ssl_context=("cert.pem", "key.pem"), port=port)
+    # app.run(debug=True, ssl_context=("cert.pem", "key.pem"), port=port)
+    app.run(debug=True, port=port)

@@ -26,12 +26,12 @@
 		"version": 1
 	  },
 	  {
-		"task": "Determinar la temperatura en la tina 3.",
+		"task": "Determinar la temperatura en la tina 3 a partir de la gráfica.",
 		"type": "numeric",
 		"version": 1
 	  },
 	  {
-		"task": "Determinar porcentaje de llenado en la tina 1.",
+		"task": "Determinar porcentaje de llenado en la cámara 1.",
 		"type": "numeric",
 		"version": 1
 	  },
@@ -46,8 +46,8 @@
 		"version": 2
 	  },
 	  {
-		"task": "Configurar 3 lotes.",
-		"type": "bool",
+		"task": "¿En que lote se encuentra el queso cremoso (pestaña configuración de lote)?",
+		"type": "numeric",
 		"version": 2
 	  },
 	  {
@@ -66,7 +66,7 @@
 		"version": 2
 	  },
 	  {
-		"task": "¿Qué queso se produjo en el lote más viejo (de la pestaña lote)?",
+		"task": "¿Qué queso se produjo en el lote más viejo (pestaña configuración de lote)?",
 		"type": "string",
 		"version": 2
 	  }

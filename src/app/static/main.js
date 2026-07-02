@@ -1,5 +1,49 @@
+// Import the GazeTracker class from gazeTracking.js
+import { GazeTracker } from './gazeTracking.js';
+
 // Initialize gaze tracker instance
 let gazeTracker = null;
+
+// Define currentTaskIndex globally
+let currentTaskIndex = 0;
+
+// Define global functions for sending data
+function enviarPuntos(puntos) {
+  const subjectId = parseInt(id, 10);
+  console.log("Enviando", puntos.length, "puntos para el sujeto:", subjectId);
+  
+  fetch("/api/save-points", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ points: puntos, id: subjectId }),
+  })
+    .then((response) => response.text())
+    .then((result) => {
+      console.log("Respuesta del servidor:", result);
+    })
+    .catch((error) => {
+      console.error("Error al enviar puntos:", error);
+    });
+}
+
+function enviarAccuracy(accuracy) {
+  fetch("/api/save-accuracy", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ accuracy: accuracy, id: parseInt(id, 10) }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("Accuracy guardada:", result);
+    })
+    .catch((error) => {
+      console.error("Error al guardar accuracy:", error);
+    });
+}
 
 function showPrototype() {
   document.getElementById("figma-prototype").style.display = "block";
@@ -23,6 +67,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Set up points batch ready callback
   gazeTracker.setOnPointsBatchReady((points) => {
     enviarPuntos(points);
+  });
+
+  // Set up accuracy calculated callback
+  gazeTracker.setOnAccuracyCalculated((accuracy) => {
+    enviarAccuracy(accuracy);
   });
 
   // Manejar el clic en el botón "Entendido"
@@ -165,23 +214,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error al cargar la configuración desde /api/config:", error)
     );
 });
-
-function enviarPuntos(puntos) {
-  fetch("/api/save-points", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ points: puntos, id: parseInt(id, 10) }),
-  })
-    .then((response) => response.text())
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
 
 function enviarTaskLogIndividual(taskLog) {
   fetch("/api/save-tasklogs", {
@@ -349,6 +381,12 @@ function checkCalibrationAndShowButton() {
     // Mostrar la primera tarea en la barra
     if (tasksArray.length > 0) {
       currentTaskIndex = 0; // Inicializar el índice de tareas
+      if (!startTime) {
+        startTime = new Date().toLocaleString("en-US", {
+          timeZone: "America/Argentina/Buenos_Aires",
+        });
+      }
+      showNextTaskInBar(); // Mostrar la primera tarea automáticamente
     } else {
       console.error("No hay tareas disponibles para mostrar.");
     }

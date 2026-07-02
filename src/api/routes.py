@@ -130,6 +130,33 @@ def save_points():
     return jsonify(result)
 
 
+@api_bp.route("/save-accuracy", methods=["POST"])
+def save_accuracy():
+    """
+    Saves the accuracy measurement for a subject.
+    ---
+    parameters:
+        - name: accuracy
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    description: Subject ID
+                accuracy:
+                    type: number
+                    description: Accuracy measurement from calibration
+    responses:
+        200:
+            description: Accuracy saved successfully
+    """
+    data = request.get_json()
+    result = measurement_service.save_accuracy(data)
+    return jsonify(result)
+
+
 @api_bp.route("/save-tasklogs", methods=["POST"])
 def save_tasklogs():
     """
